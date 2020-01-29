@@ -50,7 +50,8 @@ paths:
         required: true
     get:
       summary: Get member info
-      tags: []
+      tags:
+        - member
       responses:
         '200':
           description: OK
