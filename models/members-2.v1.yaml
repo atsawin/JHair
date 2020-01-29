@@ -16,6 +16,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/member'
       operationId: get-members
       description: List members
       tags:
@@ -73,6 +79,8 @@ components:
     member:
       title: member
       type: object
+      x-tags:
+        - member
       properties:
         id:
           type: integer
@@ -82,7 +90,15 @@ components:
           type: string
         lastname:
           type: string
-      x-tags:
-        - member
+        citizenNo:
+          type: string
+          minLength: 13
+          maxLength: 13
+          pattern: '^[0-9]{13}$'
+        address:
+          type: string
+        telephone:
+          type: string
+          pattern: '^[0-9]+$'
 tags:
   - name: member
