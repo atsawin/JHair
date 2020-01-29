@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: members
+  version: '1.0'
+  contact:
+    email: joke@nakhon.net
+  description: Manage members
+  license:
+    name: MIT
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /members:
+    get:
+      summary: List members
+      responses:
+        '200':
+          description: OK
+      operationId: get-members
+      description: List members
+      tags:
+        - member
+    post:
+      summary: Create new member
+      operationId: post-members
+      responses:
+        '201':
+          description: Created
+      description: Create new member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/member'
+      tags:
+        - member
+    parameters: []
+  '/members/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get member info
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+      operationId: get-members-id
+      description: Get member info
+    put:
+      summary: Update member info
+      operationId: put-members-id
+      responses:
+        '200':
+          description: OK
+      description: Update member info
+      tags:
+        - member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/member'
+components:
+  schemas:
+    member:
+      title: member
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+      x-tags:
+        - member
+tags:
+  - name: member
