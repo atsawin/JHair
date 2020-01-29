@@ -32,6 +32,10 @@ paths:
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
       description: Create new member
       requestBody:
         content:
@@ -75,13 +79,159 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/member'
+  '/members/{id}/warehouses':
+    get:
+      summary: List warehouses
+      tags:
+        - member
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/warehouse'
+      operationId: get-warehouses
+      description: "List member's warehouses"
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Create new warehouse
+      operationId: post-members-id-warehouses
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+      description: "Create new member's warehouse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/warehouse'
+      tags:
+        - member
+  '/members/{id}/warehouses/{warehouse-id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+        description: ''
+      - schema:
+          type: integer
+        name: warehouse-id
+        in: path
+        required: true
+    get:
+      summary: "Get member's warehouse info"
+      tags:
+        - member
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+      operationId: get-members-id-warehouses-id
+      description: "Get member's warehouse info"
+    put:
+      summary: "Update member's warehouse info"
+      operationId: put-members-id-warehouses-id
+      responses:
+        '200':
+          description: OK
+      description: "Update member's warehouse info"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/warehouse'
+      tags:
+        - member
+  /products:
+    get:
+      summary: List products
+      tags:
+        - product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/product'
+      operationId: get-products
+      description: List products
+    post:
+      summary: Create new product
+      operationId: post-products
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+      tags:
+        - product
+      description: Create new product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+  '/products/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get product info
+      tags:
+        - product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+      operationId: get-products-id
+      description: Get product info
+    put:
+      summary: Update product info
+      operationId: put-products-id
+      responses:
+        '200':
+          description: OK
+      description: Update product info
+      tags:
+        - product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
 components:
   schemas:
     member:
       title: member
       type: object
-      x-tags:
-        - member
       properties:
         id:
           type: integer
@@ -101,5 +251,29 @@ components:
         telephone:
           type: string
           pattern: '^[0-9]+$'
+      description: Member info
+    warehouse:
+      title: warehouse
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+      description: Warehouse info
+    product:
+      title: product
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+      description: Product info
 tags:
   - name: member
+  - name: product
