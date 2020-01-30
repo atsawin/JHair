@@ -1,0 +1,101 @@
+openapi: 3.0.0
+info:
+  title: Sales provider
+  version: '1.0'
+  description: API provided by Sales system for consumed by ERP
+  license:
+    name: MIT
+  contact:
+    email: joke@nakhon.net
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/deliveries/{id}':
+    get:
+      summary: Get delivery info
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  purchasing:
+                    type: string
+      operationId: get-deliveries
+      description: Get delivery info
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+  '/purchasing/{id}/deliveries':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: "List purchasing's deliveries"
+      tags:
+        - transaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+      operationId: get-purchasing-id-deliveries
+      description: "List purchasing's deliveries"
+    post:
+      summary: Create delivery
+      operationId: post-purchasing-id-deliveries
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+      description: Create delivery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                deliveryDate:
+                  type: string
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productCode:
+                        type: string
+                      quantity:
+                        type: integer
+                      unitCode:
+                        type: string
+      tags:
+        - transaction
+components:
+  schemas: {}
+tags:
+  - name: member
+  - name: product
+  - name: transaction

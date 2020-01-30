@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
-  title: members
+  title: Sales consumer
   version: '1.0'
   contact:
     email: joke@nakhon.net
-  description: Manage members
+  description: API provided by ERP for consumed by Sales system
   license:
     name: MIT
 servers:
@@ -264,24 +264,7 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        receivingDate:
-                          type: string
-                          format: date-time
-                        warehouse:
-                          $ref: '#/components/schemas/warehouse'
-                        products:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              product:
-                                $ref: '#/components/schemas/product'
-                              quantity:
-                                type: integer
-                              unitCode:
-                                type: string
+                      $ref: '#/components/schemas/receiving'
       operationId: get-members-id-receivings
       description: "List member's receivings"
       tags:
@@ -292,6 +275,10 @@ paths:
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
       description: Receive products to warehouse
       requestBody:
         content:
@@ -299,6 +286,8 @@ paths:
             schema:
               type: object
               properties:
+                code:
+                  type: string
                 receiveDate:
                   type: string
                   format: date-time
@@ -339,23 +328,7 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        purchaseDate:
-                          type: string
-                        seller:
-                          $ref: '#/components/schemas/member'
-                        products:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              product:
-                                $ref: '#/components/schemas/product'
-                              quantity:
-                                type: integer
-                              unitCode:
-                                type: string
+                      $ref: '#/components/schemas/purchasing'
       operationId: get-members-id-purchasings
       description: "List member's purchasing"
       tags:
@@ -366,6 +339,10 @@ paths:
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
       description: Create purchasing
       requestBody:
         content:
@@ -373,6 +350,8 @@ paths:
             schema:
               type: object
               properties:
+                code:
+                  type: string
                 purchaseDate:
                   type: string
                   format: date-time
@@ -444,6 +423,55 @@ components:
           type: string
         price:
           type: number
+    purchasing:
+      title: purchasing
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        purchaseDate:
+          type: string
+        seller:
+          $ref: '#/components/schemas/member'
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                $ref: '#/components/schemas/product'
+              quantity:
+                type: integer
+              unitCode:
+                type: string
+      description: Purchasing info
+    receiving:
+      title: receiving
+      type: object
+      description: Receiving info
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        receivingDate:
+          type: string
+          format: date-time
+        warehouse:
+          $ref: '#/components/schemas/warehouse'
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                $ref: '#/components/schemas/product'
+              quantity:
+                type: integer
+              unitCode:
+                type: string
 tags:
   - name: member
   - name: product
