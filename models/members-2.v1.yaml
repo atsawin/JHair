@@ -251,8 +251,6 @@ paths:
         required: true
     get:
       summary: "List member's receivings"
-      tags:
-        - member
       responses:
         '200':
           description: OK
@@ -282,8 +280,12 @@ paths:
                                 $ref: '#/components/schemas/product'
                               quantity:
                                 type: integer
+                              unitCode:
+                                type: string
       operationId: get-members-id-receivings
       description: "List member's receivings"
+      tags:
+        - transaction
     post:
       summary: Receive products
       operationId: post-members-id-receivings
@@ -311,8 +313,84 @@ paths:
                         type: string
                       quantity:
                         type: integer
+                      unitCode:
+                        type: string
       tags:
-        - member
+        - transaction
+  '/members/{id}/purchasings':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: "List member's purchasing"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        purchaseDate:
+                          type: string
+                        seller:
+                          $ref: '#/components/schemas/member'
+                        products:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product:
+                                $ref: '#/components/schemas/product'
+                              quantity:
+                                type: integer
+                              unitCode:
+                                type: string
+      operationId: get-members-id-purchasings
+      description: "List member's purchasing"
+      tags:
+        - transaction
+    post:
+      summary: Purchase products
+      operationId: post-members-id-purchasings
+      responses:
+        '201':
+          description: Created
+      description: Create purchasing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                purchaseDate:
+                  type: string
+                  format: date-time
+                sellerCode:
+                  type: string
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productCode:
+                        type: string
+                      quantity:
+                        type: integer
+                      unitCode:
+                        type: string
+      tags:
+        - transaction
 components:
   schemas:
     member:
@@ -369,3 +447,4 @@ components:
 tags:
   - name: member
   - name: product
+  - name: transaction
