@@ -136,6 +136,8 @@ paths:
       summary: "Get member's warehouse info"
       tags:
         - member
+      operationId: get-members-id-warehouses-id
+      description: "Get member's warehouse info"
       responses:
         '200':
           description: OK
@@ -143,8 +145,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/product'
-      operationId: get-members-id-warehouses-id
-      description: "Get member's warehouse info"
     put:
       summary: "Update member's warehouse info"
       operationId: put-members-id-warehouses-id
@@ -164,6 +164,8 @@ paths:
       summary: List products
       tags:
         - product
+      operationId: get-products
+      description: List products
       responses:
         '200':
           description: OK
@@ -173,8 +175,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/product'
-      operationId: get-products
-      description: List products
     post:
       summary: Create new product
       operationId: post-products
@@ -196,7 +196,7 @@ paths:
   '/products/{id}':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true
@@ -227,11 +227,51 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/product'
+  '/members/{id}/receivings':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: "List member's receivings"
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        receivingDate:
+                          type: string
+                          format: date-time
+                        products:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product:
+                                $ref: '#/components/schemas/product'
+                              quantity:
+                                type: integer
+      operationId: get-members-id-receivings
+      description: "List member's receivings"
 components:
   schemas:
     member:
       title: member
       type: object
+      description: Member info
       properties:
         id:
           type: integer
@@ -251,7 +291,6 @@ components:
         telephone:
           type: string
           pattern: '^[0-9]+$'
-      description: Member info
     warehouse:
       title: warehouse
       type: object
@@ -266,6 +305,7 @@ components:
     product:
       title: product
       type: object
+      description: Product info
       properties:
         id:
           type: integer
@@ -273,7 +313,12 @@ components:
           type: string
         name:
           type: string
-      description: Product info
+        baseUnitCode:
+          type: string
+        baseUnitName:
+          type: string
+        price:
+          type: number
 tags:
   - name: member
   - name: product
