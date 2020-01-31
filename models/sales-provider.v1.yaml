@@ -13,7 +13,8 @@ paths:
   '/deliveries/{id}':
     get:
       summary: Get delivery info
-      tags: []
+      tags:
+        - transaction
       responses:
         '200':
           description: OK
