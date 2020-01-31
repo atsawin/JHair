@@ -530,6 +530,55 @@ paths:
                         type: string
       tags:
         - transaction
+  '/orders/{id}/payments':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: List payments for purchasing or sale
+      tags:
+        - transaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  payments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/payment'
+      operationId: get-orders-id-payments
+      description: List payments for purchasing or sale
+    post:
+      summary: Create payment for purchasing or sale
+      operationId: post-orders-id-payments
+      responses:
+        '201':
+          description: Created
+      description: Create payment for purchasing or sale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                payDate:
+                  type: string
+                  format: date-time
+                amount:
+                  type: number
+      tags:
+        - transaction
 components:
   schemas:
     member:
@@ -647,6 +696,20 @@ components:
         price:
           type: number
       description: Unit of product
+    payment:
+      title: payment
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        payDate:
+          type: string
+          format: date-time
+        amount:
+          type: integer
+      description: Payment info
 tags:
   - name: member
   - name: product
