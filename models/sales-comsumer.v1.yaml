@@ -264,6 +264,80 @@ paths:
                   type: string
                 baseUnitPrice:
                   type: number
+  /customers:
+    get:
+      summary: List customers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/member'
+      operationId: get-customers
+      description: List customers
+      tags:
+        - member
+    post:
+      summary: Create new customer
+      operationId: post-customers
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+      description: Create new customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/member'
+      tags:
+        - member
+    parameters: []
+  '/customers/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get customer info
+      tags:
+        - member
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/member'
+      operationId: get-customers-id
+      description: Get customer info
+    put:
+      summary: Update customer info
+      operationId: put-customers-id
+      responses:
+        '200':
+          description: OK
+      description: Update customer info
+      tags:
+        - member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/member'
   '/members/{id}/receivings':
     parameters:
       - schema:
@@ -350,7 +424,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/purchasing'
+                      $ref: '#/components/schemas/order'
       operationId: get-members-id-purchasings
       description: "List member's purchasing"
       tags:
@@ -365,7 +439,71 @@ paths:
             application/json:
               schema:
                 type: integer
-      description: Create purchasing
+      description: Purchase products from parent member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                purchaseDate:
+                  type: string
+                  format: date-time
+                sellerCode:
+                  type: string
+                products:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productCode:
+                        type: string
+                      quantity:
+                        type: integer
+                      unitCode:
+                        type: string
+      tags:
+        - transaction
+  '/members/{id}/sales':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: "List member's sale"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
+      operationId: get-members-id-sales
+      description: "List member's sale"
+      tags:
+        - transaction
+    post:
+      summary: Sell products
+      operationId: post-members-id-sales
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+      description: Sell products to customer
       requestBody:
         content:
           application/json:
@@ -443,10 +581,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/productUnit'
-    purchasing:
-      title: purchasing
+    order:
+      title: order
       type: object
-      description: Purchasing info
+      description: Purchasing and sale info
       properties:
         id:
           type: integer
@@ -455,6 +593,8 @@ components:
         purchaseDate:
           type: string
         seller:
+          $ref: '#/components/schemas/member'
+        buyer:
           $ref: '#/components/schemas/member'
         products:
           type: array

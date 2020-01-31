@@ -21,10 +21,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  delivery:
-                    $ref: '#/components/schemas/delivery'
+                $ref: '#/components/schemas/delivery'
       operationId: get-deliveries
       description: Get delivery info
     parameters:
@@ -33,7 +30,7 @@ paths:
         name: id
         in: path
         required: true
-  '/purchasings/{id}/deliveries':
+  '/orders/{id}/deliveries':
     parameters:
       - schema:
           type: integer
@@ -41,7 +38,7 @@ paths:
         in: path
         required: true
     get:
-      summary: "List purchasing's deliveries"
+      summary: List deliveries of purchasing or sale
       tags:
         - transaction
       responses:
@@ -57,9 +54,9 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-      operationId: get-purchasings-id-deliveries
-      description: "List purchasing's deliveries"
+                      $ref: '#/components/schemas/delivery'
+      operationId: get-orders-id-deliveries
+      description: List deliveries of purchasing or sale
     post:
       summary: Create delivery
       operationId: post-purchasing-id-deliveries
@@ -136,8 +133,8 @@ components:
           type: integer
         code:
           type: string
-        purchasing:
-          $ref: './sales-comsumer.v1.yaml#/components/schemas/purchasing'
+        order:
+          $ref: './sales-comsumer.v1.yaml#/components/schemas/order'
         deliveryStatus:
           type: array
           items:
