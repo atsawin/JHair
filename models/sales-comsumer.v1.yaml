@@ -207,7 +207,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  type: string
+                baseUnitCode:
+                  type: string
+                baseUnitName:
+                  type: string
+                baseUnitPrice:
+                  type: number
   '/products/{id}':
     parameters:
       - schema:
@@ -241,7 +252,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  type: string
+                baseUnitCode:
+                  type: string
+                baseUnitName:
+                  type: string
+                baseUnitPrice:
+                  type: number
   '/members/{id}/receivings':
     parameters:
       - schema:
@@ -417,15 +439,14 @@ components:
           type: string
         name:
           type: string
-        baseUnitCode:
-          type: string
-        baseUnitName:
-          type: string
-        price:
-          type: number
+        productUnit:
+          type: array
+          items:
+            $ref: '#/components/schemas/productUnit'
     purchasing:
       title: purchasing
       type: object
+      description: Purchasing info
       properties:
         id:
           type: integer
@@ -446,7 +467,6 @@ components:
                 type: integer
               unitCode:
                 type: string
-      description: Purchasing info
     receiving:
       title: receiving
       type: object
@@ -472,6 +492,21 @@ components:
                 type: integer
               unitCode:
                 type: string
+    productUnit:
+      title: productUnit
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+        multiplier:
+          type: integer
+        price:
+          type: number
+      description: Unit of product
 tags:
   - name: member
   - name: product

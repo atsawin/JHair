@@ -22,8 +22,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  purchasing:
-                    type: string
+                  delivery:
+                    $ref: '#/components/schemas/delivery'
       operationId: get-deliveries
       description: Get delivery info
     parameters:
@@ -32,7 +32,7 @@ paths:
         name: id
         in: path
         required: true
-  '/purchasing/{id}/deliveries':
+  '/purchasings/{id}/deliveries':
     parameters:
       - schema:
           type: integer
@@ -57,7 +57,7 @@ paths:
                     type: array
                     items:
                       type: object
-      operationId: get-purchasing-id-deliveries
+      operationId: get-purchasings-id-deliveries
       description: "List purchasing's deliveries"
     post:
       summary: Create delivery
@@ -93,8 +93,81 @@ paths:
                         type: string
       tags:
         - transaction
+  '/deliveries/{id}/statuses':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Add delivery status
+      operationId: post-deliveries-id-statuses
+      responses:
+        '201':
+          description: Created
+      description: Add delivery status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                statusDate:
+                  type: string
+                  format: date-time
+                statusCode:
+                  type: string
+                statusDetail:
+                  type: string
+      tags:
+        - transaction
 components:
-  schemas: {}
+  schemas:
+    delivery:
+      title: delivery
+      type: object
+      description: Delivery info
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        purchasing:
+          $ref: './sales-comsumer.v1.yaml#/components/schemas/purchasing'
+        deliveryStatus:
+          type: array
+          items:
+            $ref: '#/components/schemas/deliveryStatus'
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                $ref: './sales-comsumer.v1.yaml#/components/schemas/product'
+              quantity:
+                type: integer
+              productUnit:
+                $ref: './sales-comsumer.v1.yaml#/components/schemas/productUnit'
+    deliveryStatus:
+      title: deliveryStatus
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        statusDate:
+          type: string
+          format: date-time
+        statusCode:
+          type: string
+        statusDetail:
+          type: string
+      description: Delivery status info
 tags:
   - name: member
   - name: product
