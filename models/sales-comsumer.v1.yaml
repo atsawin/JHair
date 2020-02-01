@@ -26,7 +26,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/member'
+                      $ref: '#/components/schemas/person'
       operationId: get-members
       description: List members
       tags:
@@ -46,7 +46,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/member'
+              $ref: '#/components/schemas/person'
       tags:
         - member
     parameters: []
@@ -67,7 +67,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/member'
+                $ref: '#/components/schemas/person'
       operationId: get-members-id
       description: Get member info
     put:
@@ -83,7 +83,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/member'
+              $ref: '#/components/schemas/person'
   '/members/{id}/warehouses':
     get:
       summary: List warehouses
@@ -280,7 +280,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/member'
+                      $ref: '#/components/schemas/person'
       operationId: get-customers
       description: List customers
       tags:
@@ -300,7 +300,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/member'
+              $ref: '#/components/schemas/person'
       tags:
         - member
     parameters: []
@@ -321,7 +321,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/member'
+                $ref: '#/components/schemas/person'
       operationId: get-customers-id
       description: Get customer info
     put:
@@ -337,7 +337,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/member'
+              $ref: '#/components/schemas/person'
   '/members/{id}/receivings':
     parameters:
       - schema:
@@ -375,7 +375,7 @@ paths:
             application/json:
               schema:
                 type: integer
-      description: Receive products to warehouse
+      description: Receive products from factory to warehouse. This API is used for brand owner only.
       requestBody:
         content:
           application/json:
@@ -581,10 +581,10 @@ paths:
         - transaction
 components:
   schemas:
-    member:
-      title: member
+    person:
+      title: person
       type: object
-      description: Member info
+      description: Member and customer info
       properties:
         id:
           type: integer
@@ -600,6 +600,14 @@ components:
           maxLength: 13
           pattern: '^[0-9]{13}$'
         address:
+          type: string
+        subDistrict:
+          type: string
+        district:
+          type: string
+        province:
+          type: string
+        postalCode:
           type: string
         telephone:
           type: string
@@ -642,9 +650,42 @@ components:
         purchaseDate:
           type: string
         seller:
-          $ref: '#/components/schemas/member'
+          $ref: '#/components/schemas/person'
         buyer:
-          $ref: '#/components/schemas/member'
+          $ref: '#/components/schemas/person'
+        paymentType:
+          type: string
+          description: 'C-Collect on delivery, P-Pre-pay'
+          enum:
+            - C
+            - P
+        amount:
+          type: number
+        discountRate:
+          type: number
+          description: '1 = 100%, 0.25 = 25%'
+          minimum: 0
+          maximum: 1
+        discount:
+          type: number
+        taxType:
+          type: string
+          description: 'E-Exclusive, I-Inclusive, N-No tax'
+          enum:
+            - E
+            - I
+            - N
+          minLength: 1
+          maxLength: 1
+        taxRate:
+          type: number
+          description: '1 = 100%, 0.25 = 25%'
+          minimum: 0
+          maximum: 1
+        tax:
+          type: number
+        total:
+          type: number
         products:
           type: array
           items:
@@ -656,6 +697,33 @@ components:
                 type: integer
               unitCode:
                 type: string
+              price:
+                type: number
+              amount:
+                type: number
+              productDiscountRate:
+                type: number
+                description: '1 = 100%, 0.25 = 25%'
+                minimum: 0
+                maximum: 1
+              productDiscount:
+                type: number
+              discountRate:
+                type: number
+                description: '1 = 100%, 0.25 = 25%'
+                minimum: 0
+                maximum: 1
+              discount:
+                type: number
+              taxRate:
+                type: number
+                description: '1 = 100%, 0.25 = 25%'
+                minimum: 0
+                maximum: 1
+              tax:
+                type: number
+              total:
+                type: number
     receiving:
       title: receiving
       type: object
