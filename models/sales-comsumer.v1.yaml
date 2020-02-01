@@ -453,6 +453,39 @@ paths:
                   format: date-time
                 sellerCode:
                   type: string
+                paymentType:
+                  type: string
+                  description: 'C-Collect on delivery, P-Pre-pay'
+                  enum:
+                    - C
+                    - P
+                amount:
+                  type: number
+                discountRate:
+                  type: number
+                  description: '1 = 100%, 0.25 = 25%'
+                  minimum: 0
+                  maximum: 1
+                discount:
+                  type: number
+                taxType:
+                  type: string
+                  description: 'E-Exclusive, I-Inclusive, N-No tax'
+                  enum:
+                    - E
+                    - I
+                    - 'N'
+                  minLength: 1
+                  maxLength: 1
+                taxRate:
+                  type: number
+                  description: '1 = 100%, 0.25 = 25%'
+                  minimum: 0
+                  maximum: 1
+                tax:
+                  type: number
+                total:
+                  type: number
                 products:
                   type: array
                   items:
@@ -464,6 +497,33 @@ paths:
                         type: integer
                       unitCode:
                         type: string
+                      price:
+                        type: number
+                      amount:
+                        type: number
+                      productDiscountRate:
+                        type: number
+                        description: '1 = 100%, 0.25 = 25%'
+                        minimum: 0
+                        maximum: 1
+                      productDiscount:
+                        type: number
+                      discountRate:
+                        type: number
+                        description: '1 = 100%, 0.25 = 25%'
+                        minimum: 0
+                        maximum: 1
+                      discount:
+                        type: number
+                      taxRate:
+                        type: number
+                        description: '1 = 100%, 0.25 = 25%'
+                        minimum: 0
+                        maximum: 1
+                      tax:
+                        type: number
+                      total:
+                        type: number
       tags:
         - transaction
   '/members/{id}/sales':
@@ -517,6 +577,39 @@ paths:
                   format: date-time
                 sellerCode:
                   type: string
+                paymentType:
+                  type: string
+                  description: 'C-Collect on delivery, P-Pre-pay'
+                  enum:
+                    - C
+                    - P
+                amount:
+                  type: number
+                discountRate:
+                  type: number
+                  description: '1 = 100%, 0.25 = 25%'
+                  minimum: 0
+                  maximum: 1
+                discount:
+                  type: number
+                taxType:
+                  type: string
+                  description: 'E-Exclusive, I-Inclusive, N-No tax'
+                  enum:
+                    - E
+                    - I
+                    - 'N'
+                  minLength: 1
+                  maxLength: 1
+                taxRate:
+                  type: number
+                  description: '1 = 100%, 0.25 = 25%'
+                  minimum: 0
+                  maximum: 1
+                tax:
+                  type: number
+                total:
+                  type: number
                 products:
                   type: array
                   items:
@@ -528,6 +621,33 @@ paths:
                         type: integer
                       unitCode:
                         type: string
+                      price:
+                        type: number
+                      amount:
+                        type: number
+                      productDiscountRate:
+                        type: number
+                        description: '1 = 100%, 0.25 = 25%'
+                        minimum: 0
+                        maximum: 1
+                      productDiscount:
+                        type: number
+                      discountRate:
+                        type: number
+                        description: '1 = 100%, 0.25 = 25%'
+                        minimum: 0
+                        maximum: 1
+                      discount:
+                        type: number
+                      taxRate:
+                        type: number
+                        description: '1 = 100%, 0.25 = 25%'
+                        minimum: 0
+                        maximum: 1
+                      tax:
+                        type: number
+                      total:
+                        type: number
       tags:
         - transaction
   '/orders/{id}/payments':
@@ -674,7 +794,7 @@ components:
           enum:
             - E
             - I
-            - N
+            - 'N'
           minLength: 1
           maxLength: 1
         taxRate:
@@ -695,8 +815,8 @@ components:
                 $ref: '#/components/schemas/product'
               quantity:
                 type: integer
-              unitCode:
-                type: string
+              productUnit:
+                $ref: '#/components/schemas/productUnit'
               price:
                 type: number
               amount:
