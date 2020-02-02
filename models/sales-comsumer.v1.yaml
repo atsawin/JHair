@@ -699,6 +699,59 @@ paths:
                   type: number
       tags:
         - transaction
+  '/orders/{id}/statuses':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: "List order's statuses"
+      tags:
+        - transaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/orderStatus'
+      operationId: get-orders-id-statuses
+      description: "List order's statuses"
+    post:
+      summary: Add order status
+      operationId: post-orders-id-statuses
+      responses:
+        '201':
+          description: Created
+      description: Add order status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusType:
+                  type: string
+                  enum:
+                    - H
+                    - C
+                  description: |-
+                    H-Approve for shipment
+                    C-Cancelled
+                statusDate:
+                  type: string
+                  format: date-time
+      tags:
+        - transaction
 components:
   schemas:
     person:
@@ -806,6 +859,10 @@ components:
           type: number
         total:
           type: number
+        orderStatuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/orderStatus'
         products:
           type: array
           items:
@@ -898,6 +955,37 @@ components:
         amount:
           type: integer
       description: Payment info
+    orderStatus:
+      title: orderStatus
+      type: object
+      properties:
+        id:
+          type: integer
+        statusType:
+          type: string
+          description: |-
+            N-New
+            R-Partially paid
+            P-Fully Paid
+            H-Approve for shipment
+            M-Prepare Shipment
+            C-Cancelled
+            S-Sent
+            R-Received
+            J-Rejected
+          enum:
+            - 'N'
+            - R
+            - P
+            - H
+            - M
+            - C
+            - S
+            - R
+            - J
+        statusDate:
+          type: string
+          format: date-time
 tags:
   - name: member
   - name: product
