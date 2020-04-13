@@ -986,6 +986,17 @@ components:
         statusDate:
           type: string
           format: date-time
+  securitySchemes:
+    VeryHardToGuessKey:
+      type: oauth2
+      flows:
+        clientCredentials:
+          scopes:
+            read: ''
+            write: ''
+          refreshUrl: 'http://refresh'
+          tokenUrl: 'http://token'
+      description: ''
 tags:
   - name: member
   - name: product
