@@ -1,0 +1,71 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "oauth",
+    "version": "1.0",
+    "description": "Test OAuth2",
+    "contact": {
+      "name": "John Doe"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/items": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [
+          "item"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "caption": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-items",
+        "description": "A quick brown fox"
+      }
+    }
+  },
+  "definitions": {},
+  "securityDefinitions": {
+    "StaffOnly": {
+      "type": "oauth2",
+      "flow": "application",
+      "scopes": {
+        "read": "",
+        "write": ""
+      },
+      "tokenUrl": "http://token",
+      "description": ""
+    }
+  },
+  "tags": [
+    "item"
+  ]
+}
