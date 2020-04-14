@@ -58,14 +58,22 @@
       "type": "oauth2",
       "flow": "application",
       "scopes": {
-        "read": "",
-        "write": ""
+        "read": "Read data",
+        "write": "Write data"
       },
       "tokenUrl": "http://token",
-      "description": ""
+      "description": "For staff"
     }
   },
-  "tags": [
-    "item"
+  "tags": [{
+    "name": "item",
+    "description": "Product item"
+  }],
+  "security": [
+    {
+      "StaffOnly": [
+        "read"
+      ]
+    }
   ]
 }
